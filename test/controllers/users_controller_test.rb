@@ -29,7 +29,6 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal @user.email, json_response.dig(:data, :attributes, :email)
     assert_equal @user.products.first.id.to_s, json_response.dig(:data, :relationships, :products, :data, 0, :id)
     assert_equal @user.products.first.title, json_response.dig(:included, 0, :attributes, :title)
-
   end
 
   test 'should show all users' do
@@ -39,33 +38,32 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
   test 'should update user' do
     patch user_url(@user), params: { user: { name: 'test' } },
-                          headers: {Authorization:JsonWebToken.encode(user_id: @user.id)}, as: :json
+                           headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     assert_response :success
   end
 
   test 'shoud forbid update user' do
-    patch user_url(@user), params: { user: {name: "test", mail:@user.email}}
+    patch user_url(@user), params: { user: { name: 'test', mail: @user.email } }
     assert_response :forbidden
   end
 
   test 'should delete user' do
     assert_difference('User.count', -1) do
-      delete user_url(@user), headers:{Authorization: JsonWebToken.encode(user_id: @user.id)},as: :json
+      delete user_url(@user), headers: { Authorization: JsonWebToken.encode(user_id: @user.id) }, as: :json
     end
     assert_response :no_content
   end
 
-  test 'should forbid delete user' do 
-    assert_no_difference('User.count') do 
+  test 'should forbid delete user' do
+    assert_no_difference('User.count') do
       delete user_url(@user), as: :json
     end
     assert_response :forbidden
   end
 
-  test 'destroy user should destroy linked product' do 
-    assert_difference('Product.count',-1) do 
+  test 'destroy user should destroy linked product' do
+    assert_difference('Product.count', -1) do
       users(:one).destroy
-    end 
-  end 
-
+    end
+  end
 end
