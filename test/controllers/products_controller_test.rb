@@ -10,7 +10,10 @@ class ProductsControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
 
     json_response = JSON.parse(response.body)
-    assert_equal @product.title, json_response['title']
+    
+    assert_equal @product.title, json_response.dig('data', 'attributes', 'title')
+    assert_equal @product.user.id.to_s, json_response.dig('data', 'relationships', 'user', 'data', 'id')
+    assert_equal @product.user.email, json_response.dig('included', 0, 'attributes', 'email')
   end
 
   test 'shohuld show products list' do 

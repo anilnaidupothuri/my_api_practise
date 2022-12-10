@@ -2,12 +2,13 @@ class ProductsController < ApplicationController
     before_action :set_product, only: [:show, :update, :destroy]
     before_action :check_login, only: [:create, :update, :destroy]
 	def show 
-		render json: @product
+		options = {include: [:user]}
+		render json: ProductSerializer.new(@product , options).serializable_hash
 	end 
 
 	def index 
-		@products = Product.all 
-		render json: @products
+		@products = Product.search(params)
+		render json: ProductSerializer.new(@products).serializable_hash
 	end 
 
 	def create 
