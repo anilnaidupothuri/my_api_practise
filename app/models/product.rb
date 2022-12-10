@@ -2,7 +2,9 @@ class Product < ApplicationRecord
   validates :price, numericality: {greater_than_or_equal_to: 0}
   validates :title, :user_id, :price, presence: true
   belongs_to :user
-
+  
+  has_many :placements
+  has_many :orders, through: :placements
   scope :filter_by_title, lambda{ |title| where('lower(title) LIKE ?', "%#{title.downcase}%")}
   scope :above_or_equal_to_price, lambda { |price| where('price >= ?', price)}
   scope :max_price, lambda { |price| where('price <= ?', price)}
