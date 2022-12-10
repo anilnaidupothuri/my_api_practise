@@ -1,7 +1,7 @@
 class OrdersController < ApplicationController
   before_action :check_login, only: [:index, :show, :create]
 	def index 
-		@orders = current_user.orders 
+		@orders = current_user.orders.page(params[:page]).per(params[:per_page])
 		render json: OrderSerializer.new(@orders).serializable_hash
 	end 
 

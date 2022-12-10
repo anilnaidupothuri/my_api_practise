@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show update destroy]
   before_action :check_owner, only: %i[update destroy]
   def show
-    options = {include: [:products]}
+    options = { include: [:products] }
     render json: UserSerializer.new(@user, options).serializable_hash
   end
 
