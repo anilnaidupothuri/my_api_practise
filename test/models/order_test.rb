@@ -15,4 +15,13 @@ class OrderTest < ActiveSupport::TestCase
     order.save
     assert_equal (@product1.price+@product2.price), order.set_total!
   end
+
+  test 'build 2 placements for te order' do 
+    @order.build_placements_with_product_ids_and_quantities [
+           { product_id: @product1.id, quantity: 2},
+           { product_id: @product2.id, quantity: 2}]
+    assert_difference('Placement.count',2) do 
+      @order.save 
+    end 
+  end
 end
