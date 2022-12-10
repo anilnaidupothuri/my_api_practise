@@ -5,15 +5,18 @@ one:
   price: 1
   published: false
   user: one
+  quantity: 5
 
 two:
   title: MyString2
   price: 1
   published: false
   user: two
+  quantity: 5
 
 three:
   title: Tv
   price: 20000
   published: true
   user: two
+  quantity: 5
